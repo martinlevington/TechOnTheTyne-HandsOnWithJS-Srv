@@ -21,6 +21,8 @@ if [ "$1" = "strapi" ]; then
       --dbpassword=$DATABASE_PASSWORD \
       --dbssl=$DATABASE_SSL \
       $EXTRA_ARGS
+	  
+	strapi install graphql
 
   elif [ ! -d "node_modules" ]; then
 
@@ -39,6 +41,7 @@ if [ "$1" = "strapi" ]; then
   fi
 
 fi
+
 
 echo "Starting your app..."
 
