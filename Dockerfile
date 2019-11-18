@@ -1,18 +1,27 @@
 FROM strapi/base
 
+RUN yarn global add strapi@3.0.0-beta.17.5
+
+
+
 WORKDIR /srv/app
+VOLUME /srv/app
 
 COPY ./package.json ./
 COPY ./yarn.lock ./
 
-RUN yarn install
+ENV NODE_ENV development
 
-COPY . .
-
-RUN yarn build
 
 EXPOSE 1337
 
-ENV NODE_ENV develop
+COPY docker-entrypoint.sh /usr/local/bin/
 
-CMD ["yarn", "start"]
+RUN apt-get update && apt-get install -y dos2unix
+
+RUN dos2unix /usr/local/bin/docker-entrypoint.sh && apt-get --purge remove -y dos2unix && rm -rf /var/lib/apt/lists/*
+
+
+ENTRYPOINT ["docker-entrypoint.sh"]
+
+CMD ["strapi", "develop"]
